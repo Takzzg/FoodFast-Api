@@ -15,11 +15,10 @@ export const category = async (req, res) => {
     const name = req.query.name
     try {
         // if (!name) return res.json({ error: "query invalid" })
-        const categories = await Categories.find({ name:  {$regex: name, $options:'i'} })
+        const categories = await Categories.find({
+            name: { $regex: name, $options: "i" }
+        })
         if (categories.length === 0)
-
-           
-
             return res.json({ error: "not found category" })
 
         return res.json(categories)
@@ -29,22 +28,43 @@ export const category = async (req, res) => {
     }
 }
 
+export const findCatById = async (req, res) => {
+    try {
+        const id = req.params.id
+
+        if (!id)
+            return res
+                .status(500)
+                .json({ error: `BAD REQUEST - No id provided` })
+
+        let cat = await Categories.findById(id)
+        if (!cat)
+            return res
+                .status(404)
+                .json({ error: `No Category found with ID: ${id}` })
+
+        return res.json(cat)
+    } catch (error) {
+        return res.status(500).json({ error })
+    }
+}
+
 export const postCategory = async (req, res) => {
     try {
         const { name, description, img } = req.body
         let exists = await Categories.find({ name: name })
         if (!exists.length) {
             const myCategory = new Categories({
-                name, description, img
+                name,
+                description,
+                img
             })
             await myCategory.save()
             res.status(201).send("categoría creada exitosamente")
         } else {
             res.status(409).json({
-                msg:"La categoría que intenta crear YA EXISTE en la base de datos"
-            }
-                
-            )
+                msg: "La categoría que intenta crear YA EXISTE en la base de datos"
+            })
         }
     } catch (e) {
         console.log("Error en el postCategory. ", e.message)
