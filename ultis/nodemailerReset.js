@@ -1,34 +1,4 @@
-// import nodemailer from "nodemailer"
 
-// // let transporter=nodemailer.createTransport({
-// //     host:"smtp.mailtrap.io",
-// //     port:2525,
- 
-// //     auth:{
-// //         user:"f056cc172deb52",
-// //         pass:"84c80ded6a5f85"
-// //     }
-// // });
-// let transporter=nodemailer.createTransport({
-//      host:"smtp.gmail.com",
-//      port:587,
-//     secure:true,
-//     auth:{
-//         user:"fodfast7@gmail.com",
-//         pass:"d39_6DOTBel519"
-//     }
-// });
-
-// export let sendEmail=(emailTemplate)=>{
-//    transporter.sendMail(emailTemplate,(err,info)=>{
-//     if(err){
-//         console.log(err)
-//     }else{
-//         console.log("Email sent ", info).response
-//     }
-//    })
-
-// }
 import nodemailer from "nodemailer";
 
 export const sendEmail = async (email, name , id, token) => {
