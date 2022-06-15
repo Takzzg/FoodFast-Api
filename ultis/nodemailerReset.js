@@ -47,7 +47,7 @@ export const sendEmail = async (email, name , id, token) => {
              
                auth:{
                     user:"f056cc172deb52",
-                  pass:"84c80ded6a5f85"
+                    pass:"84c80ded6a5f85"
            }
         });
 

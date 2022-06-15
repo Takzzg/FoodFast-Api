@@ -7,12 +7,9 @@ import  {login,
         
 import {loginValidation,passwordValidation} from '../../middlewares/bodyValidator.js'
 
-//para la ruta de prueba
 import verifyToken  from '../../middlewares/validateToken.js'
 
 const router = express.Router()
-
-
 
 //http://localhost:3001/api/v1/auth/login
 router.post('/login',loginValidation,login)
