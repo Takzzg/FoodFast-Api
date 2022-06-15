@@ -46,8 +46,8 @@ export const sendEmail = async (email, name , id, token) => {
                  port:2525,
              
                auth:{
-                    user:"f056cc172deb52",
-                    pass:"84c80ded6a5f85"
+                    user:process.env.USER,
+                    pass:process.env.PASSWORD
            }
         });
 
