@@ -1,26 +1,19 @@
-import bcryptjs from 'bcryptjs';
 import User from "../models/user.js"
 
-export const postUser = async(req,res) =>{
+export const registerUser = async(req,res) =>{
+  const {name,email,password,rol}=req.body;
   try{
-    const {name,email,password,rol}=req.body;
-
-   
-    const users=new User({name,email,password,rol});
-     
-    //Encriptar password
-    const salt=bcryptjs.genSaltSync() //hacer más complicado el método de encriptación 
-    users.password=bcryptjs.hashSync(password,salt);  
-    await users.save()
-
-    res.json({users})
-  }catch(e){
-      console.log(e)
-  }
-    
-   
+    let user = await User.findOne({email})
+    if(user) return res.json({err: "existing user"})
+    user = new User({name,email,password,rol})
+    //user.email_Welcome()
+    await user.save()
+    return res.json(user)
+  }catch(error){
+    console.log(error)
+    return res.json({err: "Error server"})
+  }  
 }
-
 
 export const getUser = async(req,res) =>{
   try{
@@ -36,6 +29,4 @@ export const getUser = async(req,res) =>{
   }catch(e){
     console.log(e)
   }
-     
-   
 }
