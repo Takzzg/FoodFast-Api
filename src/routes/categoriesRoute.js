@@ -6,7 +6,8 @@ import {
     deleteCategory,
     category,
     postCategory,
-    findCatById
+    findCatById,
+    upDateCategory
 } from "../controllers/categoriesControllers.js"
 import fileUpload from "../../middlewares/imgCategoryCapter.js"
 
@@ -33,6 +34,9 @@ router.post("/image", fileUpload, (req, res) => {
     const url = `http://localhost:3001/imagesCategory/${req.file.filename}`
     res.json({ img: url })
 })
+
+// update CATEGORY hhtp://localhost:3001/api/v1/categories/:id
+router.patch('/:id', upDateCategory)
 
 //DELETE POST http://localhost:3001/api/v1/categories/:id
 router.delete(

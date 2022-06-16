@@ -122,3 +122,13 @@ export const upDate = async (req, res) => {
         return res.json({ msg: "Error de servidor" })
     }
 }
+
+
+export const deleteImgProduct = async (req,res)=> {
+        const {completeRoute} = req.body; 
+        console.log(completeRoute)
+        const path = completeRoute.split("/").pop(); 
+        console.log(path)
+        await unlink(path.resolve("../../public/imagesProducts/" + path));
+        res.json({msg: "Deleted image"})
+}

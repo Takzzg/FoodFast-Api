@@ -71,6 +71,19 @@ export const postCategory = async (req, res) => {
     }
 }
 
+export const upDateCategory = async(req,res) => {
+    try {
+        const id = req.params.id
+        const upDates = req.body
+        const category = await Categories.findByIdAndUpdate(id, upDates)
+        if (!category) return res.json({ err: "not found product" })
+        return res.json({ ok: "upDate Category" })
+    } catch (error) {
+        console.log(error)
+        return res.json({ msg: "Error de servidor" })
+    }
+}
+
 //Elimina dado un id de categoría.
 export const deleteCategory = async (req, res) => {
     try {
