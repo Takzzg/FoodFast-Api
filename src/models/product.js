@@ -30,10 +30,6 @@ const productSchema = new mongoose.Schema({
         ref: "Category",
         required: true
     },
-    reviews: {
-        type: Array,
-        ref: "Category"
-    },
     stock: {
         type: Number,
         default: 0
