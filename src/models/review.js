@@ -1,4 +1,4 @@
-import mongoose, { SchemaTypes } from "mongoose"
+import mongoose from "mongoose"
 const Schema = mongoose.Schema
 
 const reviewSchema = new Schema(
@@ -16,7 +16,7 @@ const reviewSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Product"
         },
-        date: SchemaTypes.Date,
+        date: Date,
         score: {
             type: Number,
             min: 1,
