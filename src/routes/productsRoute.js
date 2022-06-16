@@ -8,8 +8,7 @@ import { deleteProduct,
         upDate,  
         postProduct, 
         getProduct,
-        getProductbyId,
-        deleteImgProduct} from '../controllers/productsControllers.js';
+        getProductbyId} from '../controllers/productsControllers.js';
 
 import fileUpload from '../../middlewares/imgProductsCapter.js';
 
@@ -38,9 +37,6 @@ router.post("/image", fileUpload,(req,res)=> {
     const url = `http://localhost:3001/imagesProducts/${req.file.filename}`
     res.json({img: url})
    })
-//delete IMGproduct = http://localhost:3001/api/v1/products/image/delete
-router.delete('/image/delete', deleteImgProduct)
-
 //put product = http://localhost:3001/api/v1/products/754325
 router.put("/:id",[
     check("id","No es un id válido").isMongoId(),

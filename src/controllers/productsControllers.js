@@ -1,5 +1,9 @@
 import Product from "../models/product.js"
-import Store from "../models/store.js"
+import path, {dirname} from "path"
+import { fileURLToPath } from 'url';
+import pkg from 'fs-extra';
+const { unlink } = pkg;
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const allProducts = async (req, res) => {
    
@@ -105,8 +109,12 @@ export const deleteProduct = async (req, res) => {
     const { id } = req.params
     const product = await Product.findByIdAndRemove(id)
 
+    // Eliminar imagen de la carpeta
+    const pathLink = "/imagesProducts/" + product.img.split("/").pop(); 
+    console.log(pathLink)
+    await unlink(path.resolve("./public" + pathLink))
     res.status(200).json({
-        msg: "Producto Eliminado"
+        msg: "Product deleted"
     })
 }
 
@@ -124,11 +132,3 @@ export const upDate = async (req, res) => {
 }
 
 
-export const deleteImgProduct = async (req,res)=> {
-        const {completeRoute} = req.body; 
-        console.log(completeRoute)
-        const path = completeRoute.split("/").pop(); 
-        console.log(path)
-        await unlink(path.resolve("../../public/imagesProducts/" + path));
-        res.json({msg: "Deleted image"})
-}

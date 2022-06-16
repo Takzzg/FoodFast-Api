@@ -1,5 +1,9 @@
 import Categories from "../models/category.js"
-import Product from "../models/product.js"
+import path, {dirname} from "path"
+import { fileURLToPath } from 'url';
+import pkg from 'fs-extra';
+const { unlink } = pkg;
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const categories = async (req, res) => {
     try {
@@ -90,7 +94,8 @@ export const deleteCategory = async (req, res) => {
         const id = req.params.id
 
         let isDeleted = await Categories.findByIdAndDelete(id)
-
+        const pathLink = "/imagesCategory/" + isDeleted.img.split("/").pop(); 
+        await unlink(path.resolve("./public" + pathLink))
         if (isDeleted !== null) {
             res.send("Categoría eliminada exitosamente.")
         } else {
