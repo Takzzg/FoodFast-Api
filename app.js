@@ -56,8 +56,6 @@ app.use('/api/v1/user',userRoute)
 app.use('/api/v1/mealCombo', mealCombo)
 
 
-// hago accesible la carpeta de imágenes
-app.use(express.static(path.join(__dirname, "public")))
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, console.log("server on port: " + PORT))
