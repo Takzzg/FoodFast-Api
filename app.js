@@ -12,6 +12,7 @@ import storeRoute from './src/routes/storeRoute.js'
 import orderRoute from './src/routes/orderRoute.js'
 import  userRoute  from './src/routes/userRoute.js'
 import mealCombo from './src/routes/mealComboRoute.js'
+import fileUpload from 'express-fileupload'
 import path, {dirname} from "path"
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -24,7 +25,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
-
+app.use(fileUpload({
+    limits: {fileSize: 50 * 1024 * 1024}
+}))
 
 app.get('/',(req,res)=>{
     res.send("BIENVENIDOS AL PF.\nEsto es un GET a '/'")

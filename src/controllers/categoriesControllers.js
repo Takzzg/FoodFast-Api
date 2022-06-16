@@ -35,7 +35,6 @@ export const category = async (req, res) => {
 export const findCatById = async (req, res) => {
     try {
         const id = req.params.id
-
         if (!id)
             return res
                 .status(500)
@@ -46,8 +45,28 @@ export const findCatById = async (req, res) => {
             return res
                 .status(404)
                 .json({ error: `No Category found with ID: ${id}` })
+        let returnData = {_id: cat._id, name: cat.name, description:cat.description}
+        return res.json(returnData)
+    } catch (error) {
+        return res.status(500).json({ error })
+    }
+}
+export const getImgCategorybyID = async(req, res)=> {
+    try {
+        const id = req.params.id
+        if (!id)
+            return res
+                .status(500)
+                .json({ error: `BAD REQUEST - No id provided` })
 
-        return res.json(cat)
+        let cat = await Categories.findById(id)
+        if (!cat)
+            return res
+                .status(404)
+                .json({ error: `No Category found with ID: ${id}` })
+        res.set('Content-Type', cat.img.contentType); 
+        return res.send(cat.img.data)
+
     } catch (error) {
         return res.status(500).json({ error })
     }
@@ -55,16 +74,19 @@ export const findCatById = async (req, res) => {
 
 export const postCategory = async (req, res) => {
     try {
-        const { name, description, img } = req.body
+        const { name, description } = req.query;
+        const image = req.files; 
+
         let exists = await Categories.find({ name: name })
         if (!exists.length) {
             const myCategory = new Categories({
                 name,
-                description,
-                img
-            })
+                description})
+            myCategory.img.data = image.imageCategory.data; 
+            myCategory.img.contentType = image.imageCategory.mimetype;
+
             await myCategory.save()
-            res.status(201).send("categoría creada exitosamente")
+            res.status(201).json(myCategory)
         } else {
             res.status(409).json({
                 msg: "La categoría que intenta crear YA EXISTE en la base de datos"
@@ -77,8 +99,17 @@ export const postCategory = async (req, res) => {
 
 export const upDateCategory = async(req,res) => {
     try {
-        const id = req.params.id
-        const upDates = req.body
+        const id = req.params.id;
+        const {name, description} = req.query; 
+        const upDates = {name, description}
+
+        const image =  req.files
+        if(image && image.imageCategory) {
+            upDates.img = {}; 
+            upDates.img.data = image.imageCategory.data;
+            upDates.img.contentType = image.imageCategory.mimetype; 
+        }
+
         const category = await Categories.findByIdAndUpdate(id, upDates)
         if (!category) return res.json({ err: "not found product" })
         return res.json({ ok: "upDate Category" })
@@ -94,8 +125,6 @@ export const deleteCategory = async (req, res) => {
         const id = req.params.id
 
         let isDeleted = await Categories.findByIdAndDelete(id)
-        const pathLink = "/imagesCategory/" + isDeleted.img.split("/").pop(); 
-        await unlink(path.resolve("./public" + pathLink))
         if (isDeleted !== null) {
             res.send("Categoría eliminada exitosamente.")
         } else {
