@@ -20,14 +20,12 @@ export const createReview = async (req, res) => {
         const { userId, productId, ...data } = req.body
 
         if (!userId || !productId)
-            return res.status
-                .status(500)
-                .json({ error: `BAD REQUEST - missing id` })
+            return res.status(500).json({ error: `BAD REQUEST - missing id` })
 
         const newReview = new Review({ userId, productId, ...data })
         await newReview.save()
 
-        res.status(201).send("review created correctly")
+        res.status(201).json(newReview)
     } catch (error) {
         console.log(error)
     }
