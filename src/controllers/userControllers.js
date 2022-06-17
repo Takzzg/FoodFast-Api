@@ -30,24 +30,24 @@ export const getAllUsers = async (req, res) => {
     }
 }
 
-export const logIn = async (req, res) => {
-    try {
-        const { email, password } = req.body
+// export const logIn = async (req, res) => {
+//     try {
+//         const { email, password } = req.body
 
-        if (!email || !password) {
-            console.log("missing credentials")
-            return res.status(500).json({ error: "missing credentials" })
-        }
+//         if (!email || !password) {
+//             console.log("missing credentials")
+//             return res.status(500).json({ error: "missing credentials" })
+//         }
 
-        // FAKE LOGIN
-        const user = await User.find({ email })
-        // const match = user.password === password
-        const match = true
+//         // FAKE LOGIN
+//         const user = await User.find({ email })
+//         // const match = user.password === password
+//         const match = true
 
-        if (match) return res.json(user[0])
-        return res.status(500).json({ error: "credentials mismatch" })
-        // FAKE LOGIN
-    } catch (error) {
-        console.log(error)
-    }
-}
+//         if (match) return res.json(user[0])
+//         return res.status(500).json({ error: "credentials mismatch" })
+//         // FAKE LOGIN
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }

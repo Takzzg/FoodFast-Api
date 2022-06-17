@@ -1,6 +1,7 @@
 import express from "express"
-import { registerUser, getUser } from "../controllers/userControllers.js"
+import { registerUser, getAllUsers } from "../controllers/userControllers.js"
 import { registerValidation } from "../../middlewares/bodyValidator.js"
+import { login } from "../controllers/authControllers.js"
 
 const router = express.Router()
 
@@ -11,6 +12,6 @@ router.post("/", registerValidation, registerUser)
 router.get("/", getAllUsers)
 
 //POST  http://localhost:3001/api/v1/user/login
-router.post("/login", logIn)
+router.post("/login", login)
 
 export default router
