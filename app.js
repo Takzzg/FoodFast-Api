@@ -12,6 +12,9 @@ import storeRoute from './src/routes/storeRoute.js'
 import orderRoute from './src/routes/orderRoute.js'
 import  userRoute  from './src/routes/userRoute.js'
 import mealCombo from './src/routes/mealComboRoute.js'
+import authRoute from './src/routes/authRouter.js'
+
+import fileUpload from 'express-fileupload'
 import path, {dirname} from "path"
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -24,7 +27,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
-
+app.use(fileUpload({
+    limits: {fileSize: 50 * 1024 * 1024}
+}))
 
 app.get('/',(req,res)=>{
     res.send("BIENVENIDOS AL PF.\nEsto es un GET a '/'")
@@ -52,9 +57,10 @@ app.use('/api/v1/user',userRoute)
 //http://localhost:3001/api/v1/mealCombo
 app.use('/api/v1/mealCombo', mealCombo)
 
+//http://localhost:3001/api/v1/auth
+app.use('/api/v1/auth',authRoute)
 
-// hago accesible la carpeta de imágenes
-app.use(express.static(path.join(__dirname, "public")))
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, console.log("server on port: " + PORT))
