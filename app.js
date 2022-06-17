@@ -6,6 +6,7 @@ import express from "express"
 import cookieParser from "cookie-parser"
 import path, { dirname } from "path"
 import { fileURLToPath } from "url"
+import fileUpload from "express-fileupload"
 
 //import router
 import categoriesRoute from "./src/routes/categoriesRoute.js"
@@ -14,8 +15,7 @@ import storeRoute from "./src/routes/storeRoute.js"
 import orderRoute from "./src/routes/orderRoute.js"
 import userRoute from "./src/routes/userRoute.js"
 import mealCombo from "./src/routes/mealComboRoute.js"
-import reviewsRoute from "./src/routes/reviewsRoute.js"
-import fileUpload from "express-fileupload"
+import authRoute from "./src/routes/authRouter.js"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -55,6 +55,9 @@ app.use("/api/v1/user", userRoute)
 
 //http://localhost:3001/api/v1/mealCombo
 app.use("/api/v1/mealCombo", mealCombo)
+
+//http://localhost:3001/api/v1/auth
+app.use("/api/v1/auth", authRoute)
 
 //http://localhost:3001/api/v1/reviews
 app.use("/api/v1/reviews", reviewsRoute)
