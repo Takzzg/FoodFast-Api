@@ -12,6 +12,6 @@ router.post("/", registerValidation, registerUser)
 router.get("/", getAllUsers)
 
 //POST  http://localhost:3001/api/v1/user/login
-router.post("/login", login)
+// router.post("/login", login)
 
 export default router
