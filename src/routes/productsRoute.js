@@ -8,9 +8,9 @@ import { deleteProduct,
         upDate,  
         postProduct, 
         getProduct,
+        getImgProductbyId, 
         getProductbyId} from '../controllers/productsControllers.js';
 
-import fileUpload from '../../middlewares/imgProductsCapter.js';
 
 const router = express.Router()
 
@@ -22,6 +22,9 @@ router.get('/',getProduct)
 //GET http://localhost:3001/api/v1/products/12345
 router.get('/:id', getProductbyId);
 
+//GET IMAGE http://localhost:3001/api/v1/products/img/4748231
+router.get('/img/:id', getImgProductbyId)
+
 //post product =  http://localhost:3001/api/v1/products
 router.post("/",[
     check("name","El name es obligatorio").not().isEmpty(), 
@@ -29,14 +32,9 @@ router.post("/",[
 ],postProduct)
 
 
-//patch product =  http://localhost:3001/api/v1/:id
+//patch product =  http://localhost:3001/api/v1/products/:id
 router.patch('/:id', upDate)  
 
-//post IMGproduct =  http://localhost:3001/api/v1/products/image
-router.post("/image", fileUpload,(req,res)=> {
-    const url = `http://localhost:3001/imagesProducts/${req.file.filename}`
-    res.json({img: url})
-   })
 
 //put product = http://localhost:3001/api/v1/products/754325
 router.put("/:id",[
