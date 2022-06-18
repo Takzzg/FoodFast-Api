@@ -9,21 +9,21 @@ export const login = async(req,res)=>{
     const {email, password} = req.body
     try{
       let user = await User.findOne({email})
-      if(!user) return res.json({err: "not found user"})
+      if(!user) return res.status(404).json({err: "not found user"})
       const passwordCandidate = await user.comparePassword(password)
-      if(!passwordCandidate) return res.json({err:"invalid credential"})
+      if(!passwordCandidate) return res.status(400).json({err:"invalid credential"})
       
       //token
-      const {token, expiresIn} = generateToken(user.id)
+      const token = generateToken(user._id)//aparte del id, probar pasar el email.
      
-      return res.header('auth-token', token).json({
+      return res.status(200).json({ user, token })  
+      /* res.header('auth-token', token).json({
         error: null,
-        data: {token, expiresIn} 
-    })
+        data: {token, expiresIn} } )*/
   
     }catch(error){
       console.log(error)
-      return res.json({error: "Error server"})
+      return res.status(500).json({error: "Server error on login"})
     }
   }
 
@@ -38,12 +38,12 @@ export const login = async(req,res)=>{
     const secret=process.env.SECRETOPRIVATEKEY + user.password
     const payload={
         email:user.email,
-        id:user.id
+        _id:user._id
     }
     const token=jwt.sign(payload,secret,{expiresIn:"2h"})
     //   const link=`http://localhost:3001/api/v1/auth/reset-password/${user.id}/${token}`
     //   console.log(link)
-      sendEmail(email,user.name,user.id,token)
+      sendEmail(email,user.name,user._id,token)
 
       res.json({
         msg:"Password reset link has been sent to your email"
@@ -51,10 +51,10 @@ export const login = async(req,res)=>{
 }
 
 export const resetGetPass = async (req, res) => {
-  const {id,token}=req.params
+  const {_id,token}=req.params
   
-  const userId=await User.findById(id)
-  if(!id){
+  const userId=await User.findById(_id)
+  if(!_id){
    res.json({
        msg:"Invalid id"
    })
@@ -70,11 +70,11 @@ export const resetGetPass = async (req, res) => {
 }
 
 export const resetPostPass = async (req, res) => {
-  const {id,token}=req.params
+  const {_id,token}=req.params
   const {password}=req.body
 
-  const userId=await User.findById(id)
-  if(!id){
+  const userId=await User.findById(_id)
+  if(!_id){
    res.json({
        msg:"Invalid id"
    })
@@ -100,7 +100,7 @@ export const resetPostPass = async (req, res) => {
 //prueba
  export const prueba = async(req,res)=>{
     const requ = {user: req.user}
-    const user = await User.findById(req.uid)
+    const user = await User.findById(req._id)
     console.log("estoy en prueba",user)
     return res.json(user)
   }

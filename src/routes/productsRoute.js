@@ -2,6 +2,7 @@ import express from 'express';
 
 import { check } from 'express-validator';
 import { validarCampos } from '../../middlewares/validar-campo.js';
+import verifyToken from '../../middlewares/validateToken.js';
 
 import { deleteProduct,
         putProduct, 
@@ -28,7 +29,8 @@ router.get('/img/:id', getImgProductbyId)
 //post product =  http://localhost:3001/api/v1/products
 router.post("/",[
     check("name","El name es obligatorio").not().isEmpty(), 
-    validarCampos
+    validarCampos,
+    verifyToken
 ],postProduct)
 
 
@@ -46,7 +48,8 @@ router.put("/:id",[
 router.delete("/:id",[
     check("id","No es un id válido").isMongoId(),
     // check("product").custom(existeProducto),
-    validarCampos
+    validarCampos,
+    verifyToken
 ],deleteProduct)
 
 

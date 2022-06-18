@@ -14,14 +14,14 @@ export const registerValidation = [
     .normalizeEmail(),
     body('password', 'Contraseña mínimo 4 carácteres')
     .trim()
-    .isLength({ min: 4 }),
+    .isLength({ min: 4 })/* ,
     body('password', 'Credenciales Invalidas')
     .custom((value, { req }) => {
         if (value !== req.body.repassword) {
             throw new Error("No coinciden las contraseñas");
         }
         return value;
-    }),
+    }) */,
     validarCampos
 ]
 

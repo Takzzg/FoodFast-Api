@@ -7,6 +7,7 @@ import {
     postOrder,
     updateOrderStatus} from '../controllers/orderControllers.js'
 import { validarCampos } from '../../middlewares/validar-campo.js';
+import verifyToken from '../../middlewares/validateToken.js';
 
 const router = express.Router()
 
@@ -14,20 +15,21 @@ const router = express.Router()
 router.post('/',[
     check("user","No es un id de MongoDb válido").isMongoId(),
     check("productId","No es un id de MongoDb válido").isMongoId(),
-    validarCampos
+    validarCampos,
+    verifyToken
 ],postOrder);
 
 //GET http://localhost:3001/api/v1/orders
-router.get("/",getAllOrders);
+router.get("/", verifyToken, getAllOrders);
 
 //DELETE http://localhost:3001/api/v1/orders
-router.delete('/', deleteCompletedOrders)
+router.delete('/',verifyToken ,deleteCompletedOrders)
 
 //DELETE http://localhost:3001/api/v1/orders/"ObjetId de orden"
-router.delete('/:id', deleteOrderById)
+router.delete('/:id',verifyToken, deleteOrderById)
 
 //PUT http://localhost:3001/api/v1/orders?id=${orderId}&status=${orderStatus}
-router.put('/', updateOrderStatus)
+router.put('/',verifyToken, updateOrderStatus)
 
 
 export default router;

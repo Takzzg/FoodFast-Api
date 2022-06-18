@@ -7,7 +7,7 @@ const verifyToken = (req,res,next)=>{
     token= token.split(' ')[1]
     try {
         const payload= jwt.verify(token, process.env.JWT_SECRET)
-        req.uid = payload.uid
+        req._id = payload?._id
         next()
     } catch (error) {
         console.log(error.message)
