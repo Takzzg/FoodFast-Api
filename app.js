@@ -10,9 +10,10 @@ import categoriesRoute from './src/routes/categoriesRoute.js'
 import productsRoute from "./src/routes/productsRoute.js"
 import storeRoute from './src/routes/storeRoute.js'
 import orderRoute from './src/routes/orderRoute.js'
-import  userRoute  from './src/routes/userRoute.js'
+import userRoute  from './src/routes/userRoute.js'
 import mealCombo from './src/routes/mealComboRoute.js'
 import authRoute from './src/routes/authRouter.js'
+import paypal from './src/routes/paypalRoute.js'
 
 import fileUpload from 'express-fileupload'
 import path, {dirname} from "path"
@@ -30,8 +31,9 @@ app.use(morgan("dev"));
 app.use(fileUpload({
     limits: {fileSize: 50 * 1024 * 1024}
 }))
+app.use(express.static(path.join(__dirname, "public")));
 
-app.get('/',(req,res)=>{
+app.get('/welcome',(req,res)=>{
     res.send("BIENVENIDOS AL PF.\nEsto es un GET a '/'")
 })
 
@@ -50,7 +52,6 @@ app.use("/api/v1/orders",orderRoute)
 //http://localhost:3001/api/v1/order
 //app.use('/api/v1/order',orderRoute)
 
- 
 //http://localhost:3001/api/v1/user
 app.use('/api/v1/user',userRoute)
 
@@ -59,6 +60,9 @@ app.use('/api/v1/mealCombo', mealCombo)
 
 //http://localhost:3001/api/v1/auth
 app.use('/api/v1/auth',authRoute)
+
+//http://localhost:3001/api/v1/paypal
+app.use('/api/v1/paypal', paypal)
 
 
 
