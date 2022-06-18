@@ -13,7 +13,8 @@ export const allProducts = async (req, res) => {
             msg: "not found products"
         })
     }
-    res.status(201).send(products)
+    const newProducts = products.map(el=> {el.img = {}; return el})
+    res.status(201).send(newProducts)
 }
 export const getProduct = async (req, res) => {
     const { name, filter, sortOrder, filterValue, filterOrder } = req.query
@@ -39,14 +40,16 @@ export const getProduct = async (req, res) => {
             objOrder[filterOrder] = sortOrder
 
             const product = await Product.find(objFilter).sort(objOrder)
+            const newProducts = product.map(el=> {el.img = {}; return el})
             return res.json(
-                product.length === 0 ? "not found product" : product
+                product.length === 0 ? "not found product" : newProducts
             )
         } else {
             const allProducts = await Product.find()
+            const newProducts = allProducts.map(el=> {el.img = {}; return el})
             return allProducts.length === 0
                 ? res.json({ error: "not found all products" })
-                : res.json(allProducts)
+                : res.json(newProducts)
         }
     } catch (error) {
         console.log(error)

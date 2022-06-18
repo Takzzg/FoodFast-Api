@@ -22,10 +22,13 @@ export const category = async (req, res) => {
         const categories = await Categories.find({
             name: { $regex: name, $options: "i" }
         })
+
+        let newCategories = categories.map(el=> {el.img = {}; return el})
+        
         if (categories.length === 0)
             return res.json({ error: "not found category" })
 
-        return res.json(categories)
+        return res.json(newCategories)
     } catch (error) {
         console.log(error.message)
         return res.status(500).json({ error: "Error de servidor" })
