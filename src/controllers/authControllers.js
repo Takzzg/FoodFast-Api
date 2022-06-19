@@ -11,7 +11,7 @@ export const login = async(req,res)=>{
       let user = await User.findOne({email})
       if(!user) return res.status(404).json({err: "not found user"})
       const passwordCandidate = await user.comparePassword(password)
-      if(!passwordCandidate) return res.status(400).json({err:"invalid credential"})
+      if(!passwordCandidate) return res.status(404).json({err:"invalid credential"})
       
       //token
       const token = generateToken(user._id)//aparte del id, probar pasar el email.

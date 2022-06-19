@@ -1,5 +1,4 @@
 import User from "../models/user.js"
-import jwt from "jsonwebtoken"
 import { generateToken } from "../../ultis/token.js";
 
 export const registerUser = async(req,res) =>{
