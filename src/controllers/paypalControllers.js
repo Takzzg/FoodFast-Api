@@ -1,7 +1,9 @@
 import axios from 'axios'
 import {PAYPAL_API, PAYPAL_API_CLIENT, PAYPAL_API_SECRET } from '../../ultis/configPaypal.js'
 export const createOrden = async(req,res, next)=>{
- try {
+ const value = req.body.value; 
+ console.log(value)
+  try {
     
     const order = {
         "intent": "CAPTURE",
@@ -9,7 +11,7 @@ export const createOrden = async(req,res, next)=>{
             {
               "amount": {
                 "currency_code": "USD",
-                "value": "10.0"
+                "value": value.toString()
               }
             }
           ],
@@ -49,7 +51,7 @@ export const createOrden = async(req,res, next)=>{
     return res.json(response.data)
 
  } catch (error) {
-    return res.send("error server")
+    return res.status(500).send("error server")
  }
 }
 
