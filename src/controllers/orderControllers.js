@@ -25,13 +25,6 @@ export const postOrder = async(req,res)=>{
 export const getAllOrders = async (req, res)=>{
     try{
         const allOrders = await Order.find()
-        .populate('user',{
-            name: 1, email: 1, _id: 0})
-        .populate('productId',{
-            name: 1, stock: 1, price: 1, available: 1
-        });
-       
-
         if(allOrders.length){
             return res.json(allOrders)
         }else{
@@ -106,39 +99,20 @@ export const updateOrderStatus = async (req,res)=>{
 
 
 
+export const getUserOrders = async (req, res) => {
+    const {userID} = req.params; 
+    const orders = await Order.find({user: userID});
+    res.send(orders); 
+}
 
-// export const postOrder = async(req,res)=>{
-//       const {user,product,date,...resto}=req.body
-      
-//     if(user && product ){
-//         const order=await Order.findOne({user})
-//         .populate("product")
-//         if(order){
-//             return res.status(400).json({
-//                 msg:`La orden ${order.user}, ya existe`
-//             })
-//         }
-  
-//     const data={
-//         ...resto,
-//         user,
-//         product,
-//         date
-        
-//     }
-    
-//     const newOrder=new Order(data)
-    
-//     await newOrder.save()
-    
-    
-//     res.status(201).json({
-//         msg:"Orden creada con éxito"
-//     }); 
-//     }else{
-//         return res.status(400).json({
-//             msg:"Dato/s inválido/s"
-//         })
-//     }
-    
-// }
+export const deleteUserOrders = async (req,res)=> {
+    const {orderID} = req.params; 
+    const orders = await Order.findByIdAndRemove(orderID);
+    res.send({ok: "ok"}); 
+}
+
+export const getOrderByID = async (req,res)=> {
+    const {orderID} = req.params; 
+    const order = await Order.findById(orderID)
+    res.send(order)
+}
